@@ -1,0 +1,23 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:python": "vite build && node scripts/sync-python-static.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "5.0.4",
+    "vite": "6.4.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "@phosphor-icons/react": "2.1.10",
+    "@fontsource-variable/inter": "5.2.6",
+    "@fontsource-variable/vazirmatn": "5.2.6",
+    "@fontsource-variable/jetbrains-mono": "5.2.6"
+  },
+  "devDependencies": {}
+}

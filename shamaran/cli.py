@@ -2,6 +2,8 @@
 
 import logging
 import os
+import webbrowser
+from collections.abc import Callable
 from pathlib import Path
 
 import typer
@@ -42,9 +44,14 @@ def _confirm(message: str, enabled: bool) -> bool:
     return Confirm.ask(message, default=False)
 
 
-def build_registry(settings: Settings) -> ToolRegistry:
+def build_registry(
+    settings: Settings,
+    confirmation: Callable[[str], bool] | None = None,
+) -> ToolRegistry:
     registry = ToolRegistry()
-    confirmation = lambda message: _confirm(message, settings.confirm_mutations)
+    confirmation = confirmation or (
+        lambda message: _confirm(message, settings.confirm_mutations)
+    )
     sandbox = FilesystemSandbox(settings.workspace, Path.cwd())
     for tool in filesystem_tools(sandbox, confirmation):
         registry.register(tool)
@@ -249,3 +256,24 @@ def doctor(no_ollama: bool = typer.Option(False, help="Skip Ollama connectivity.
         typer.echo(f"{'OK' if check.ok else 'FAIL'} {check.name}: {check.detail}")
     if not all(check.ok for check in checks):
         raise typer.Exit(code=1)
+
+
+@app.command()
+def web(
+    host: str = typer.Option("127.0.0.1", help="Address to bind the Web UI to."),
+    port: int = typer.Option(8000, min=1, max=65535, help="Port for the Web UI."),
+    open_browser: bool = typer.Option(True, "--open/--no-open", help="Open the UI in your browser."),
+) -> None:
+    """Launch Shamaran's local graphical interface."""
+    import uvicorn
+
+    from shamaran.webapp import create_app
+
+    url_host = "127.0.0.1" if host in {"0.0.0.0", "::"} else host
+    url = f"http://{url_host}:{port}"
+    console.print(f"[shamaran.success]Shamaran Web is ready:[/] {url}")
+    if host in {"0.0.0.0", "::"}:
+        console.print("[shamaran.warning]LAN access is enabled. Only use this on a trusted network.[/]")
+    if open_browser:
+        webbrowser.open(url)
+    uvicorn.run(create_app(), host=host, port=port, log_level="info")

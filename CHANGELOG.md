@@ -24,7 +24,13 @@ All notable changes to Shamaran are recorded here.
 - Added a complete right-to-left Sorani Kurdish README and a three-language
   selector across the English, Persian, and Kurdish documentation.
 
-## 0.1.0 — Initial MVP
+## 0.1.0 - Initial MVP
+
+### Added
+
+- Copper Archive Web UI with real Ollama chat, model controls, memory, tool activity, and responsive layouts.
+- English, Persian, and Sorani Kurdish interface modes with native RTL support.
+- `shamaran web` launcher for the local graphical interface.
 
 - Bounded, JSON-protocol agent loop with concise visible plans.
 - Ollama provider behind a provider-neutral interface and registry.
