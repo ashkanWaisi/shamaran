@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+  <title id="title">Shamaran terminal preview</title>
+  <desc id="desc">A representative implemented Shamaran planning and tool execution session.</desc>
+  <rect width="1100" height="620" rx="24" fill="#080C16"/>
+  <rect x="1" y="1" width="1098" height="618" rx="23" fill="none" stroke="#2A3551" stroke-width="2"/>
+  <rect width="1100" height="62" rx="24" fill="#11182A"/><rect y="38" width="1100" height="24" fill="#11182A"/>
+  <circle cx="32" cy="31" r="8" fill="#FF6B75"/><circle cx="59" cy="31" r="8" fill="#F5C451"/><circle cx="86" cy="31" r="8" fill="#55D68A"/>
+  <text x="550" y="39" text-anchor="middle" fill="#8190B1" font-family="Consolas,monospace" font-size="18">shamaran — local session</text>
+  <g font-family="Consolas,monospace" font-size="20">
+    <text x="48" y="110" fill="#73D9FF">You &gt;</text><text x="126" y="110" fill="#E8EDFA">inspect this project</text>
+    <text x="48" y="165" fill="#A884FF" font-weight="700">Shamaran &gt;</text>
+    <text x="48" y="213" fill="#73D9FF" font-weight="700">Plan</text>
+    <text x="68" y="250" fill="#C6D0E5">1. Inspect files</text><text x="68" y="284" fill="#C6D0E5">2. Read project configuration</text><text x="68" y="318" fill="#C6D0E5">3. Run tests</text>
+    <text x="48" y="375" fill="#7090C8">→ filesystem.list</text><text x="48" y="412" fill="#7090C8">→ filesystem.read</text><text x="48" y="449" fill="#7090C8">→ terminal.run</text>
+    <text x="48" y="502" fill="#65DB93">✓ 37 tests passed</text>
+    <text x="48" y="558" fill="#E8EDFA">The project is healthy.</text>
+  </g>
+</svg>

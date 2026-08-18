@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Shamaran — Local AI Agent</title>
+  <desc id="desc">Dark minimal banner with the Shamaran geometric mark and product motto.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#070B16"/><stop offset="1" stop-color="#111A33"/></linearGradient>
+    <linearGradient id="accent" x1="130" y1="70" x2="370" y2="290" gradientUnits="userSpaceOnUse"><stop stop-color="#52D6FF"/><stop offset=".5" stop-color="#5387FF"/><stop offset="1" stop-color="#8B5CFF"/></linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(240 180) rotate(90) scale(230)"><stop stop-color="#294C9A" stop-opacity=".28"/><stop offset="1" stop-color="#070B16" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="360" rx="28" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1198" height="358" rx="27" fill="none" stroke="#263250" stroke-width="2"/>
+  <circle cx="240" cy="180" r="210" fill="url(#glow)"/>
+  <path d="M332 101c-29-31-83-31-124-11-36 18-48 54-27 78 18 20 48 19 79 17 34-2 52 3 58 18 7 18-17 37-44 44-35 10-69 2-87-20" fill="none" stroke="url(#accent)" stroke-width="25" stroke-linecap="round"/>
+  <circle cx="334" cy="101" r="12" fill="#52D6FF"/><circle cx="187" cy="227" r="12" fill="#8B5CFF"/>
+  <path d="M251 74V49M166 139l-23-10M333 215l23 12M254 253v27" stroke="url(#accent)" stroke-width="8" stroke-linecap="round"/>
+  <text x="445" y="150" fill="#F5F8FF" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="72" font-weight="700" letter-spacing="10">SHAMARAN</text>
+  <text x="450" y="205" fill="#A8B6D5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="29" letter-spacing="4">LOCAL AI AGENT</text>
+  <line x1="450" y1="236" x2="1018" y2="236" stroke="#2B385A"/>
+  <text x="450" y="278" fill="#70BFFF" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" letter-spacing="3">THINK · BUILD · REMEMBER · ACT</text>
+</svg>
