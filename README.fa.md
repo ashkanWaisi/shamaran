@@ -1,7 +1,7 @@
 <div dir="rtl">
 
 <p align="center">
-  <img src="docs/assets/shamaran-banner.svg" alt="شاماران — عامل هوش مصنوعی محلی" width="100%">
+  <img src="docs/assets/shamaran-lockup.png" alt="نشان رسمی شاماران" width="520">
 </p>
 
 <p align="center"><a href="README.md">English</a> · <a href="README.fa.md">فارسی</a></p>
@@ -133,6 +133,14 @@ python scripts/check_secrets.py
 ```
 
 آزمون ارائه‌دهنده‌ها mock شده است و CI به Ollama نیاز ندارد.
+
+## هویت بصری
+
+فایل‌های رسمی هویت بصری شاماران که توسط صاحب پروژه ارائه شده‌اند:
+
+- `docs/assets/shamaran-symbol.png` — نشان مستقل
+- `docs/assets/shamaran-logotype.png` — نوشتهٔ شاماران
+- `docs/assets/shamaran-lockup.png` — ترکیب نشان و نوشته
 
 ## نقشهٔ راه
 

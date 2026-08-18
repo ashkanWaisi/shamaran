@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/shamaran-banner.svg" alt="Shamaran — Local AI Agent" width="100%">
+  <img src="docs/assets/shamaran-lockup.png" alt="Shamaran official logo" width="520">
 </p>
 
 <p align="center">
@@ -32,10 +32,6 @@ machine.
 > Shamaran is intentionally not an uncontrolled autonomous agent. Mutations are
 > confirmation-gated, terminal commands are policy checked, and every run has a hard
 > step limit.
-
-<p align="center">
-  <img src="docs/assets/terminal-preview.svg" alt="Shamaran terminal preview" width="92%">
-</p>
 
 ## Features
 
@@ -230,11 +226,16 @@ workflow tests Python 3.11–3.13.
 - [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 
-## Screenshots
+## Brand assets
 
-The terminal graphic above is a representative rendering of implemented behavior.
-Real platform screenshots will be added as the interface evolves; this project does
-not claim unimplemented GUI features.
+The repository includes the official Shamaran artwork supplied by the project owner:
+
+- `docs/assets/shamaran-symbol.png` — standalone symbol
+- `docs/assets/shamaran-logotype.png` — Shamaran wordmark
+- `docs/assets/shamaran-lockup.png` — combined symbol and wordmark
+
+Real product screenshots will be added as the interface evolves. This project does
+not use mock screenshots of unimplemented features.
 
 ## Roadmap
 

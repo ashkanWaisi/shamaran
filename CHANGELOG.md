@@ -2,6 +2,11 @@
 
 All notable changes to Shamaran are recorded here.
 
+## Unreleased
+
+- Replaced the original generated SVG identity with the project owner's official
+  Shamaran symbol, logotype, and combined PNG artwork.
+
 ## 0.1.0 — Initial MVP
 
 - Bounded, JSON-protocol agent loop with concise visible plans.
