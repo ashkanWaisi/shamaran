@@ -31,6 +31,7 @@ All notable changes to Shamaran are recorded here.
 - Copper Archive Web UI with real Ollama chat, model controls, memory, tool activity, and responsive layouts.
 - English, Persian, and Sorani Kurdish interface modes with native RTL support.
 - `shamaran web` launcher for the local graphical interface.
+- Confirmed, allowlisted desktop launcher for common folders and system applications.
 
 - Bounded, JSON-protocol agent loop with concise visible plans.
 - Ollama provider behind a provider-neutral interface and registry.

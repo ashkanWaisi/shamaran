@@ -21,6 +21,7 @@ from shamaran.memory import SQLiteMemory
 from shamaran.providers.registry import default_provider_registry
 from shamaran.tools.filesystem import FilesystemSandbox, filesystem_tools
 from shamaran.tools.git_tools import git_tools
+from shamaran.tools.desktop import DesktopOpenTool
 from shamaran.tools.registry import ToolRegistry
 from shamaran.tools.terminal import TerminalTool
 from shamaran.ui import console, print_assistant_answer, show_banner, status_table
@@ -56,6 +57,7 @@ def build_registry(
     for tool in filesystem_tools(sandbox, confirmation):
         registry.register(tool)
     registry.register(TerminalTool(Path.cwd(), confirmation))
+    registry.register(DesktopOpenTool(confirmation))
     for tool in git_tools(Path.cwd(), confirmation):
         registry.register(tool)
     return registry
