@@ -3,6 +3,7 @@
 import json
 from collections.abc import Callable
 
+from shamaran.exceptions import ProviderError
 from shamaran.providers.base import BaseProvider, ChatMessage
 from shamaran.tools.registry import ToolRegistry
 
@@ -14,6 +15,11 @@ from .prompts import SYSTEM_PROMPT
 
 PlanCallback = Callable[[list[str]], None]
 ToolCallback = Callable[[str, bool, str], None]
+
+FORMAT_REPAIR_PROMPT = """Your previous response did not match the required protocol.
+Return the same intended response again as exactly one JSON object. Use either
+{"action":{"tool":"tool.name","arguments":{}}} or {"final":"answer"}.
+Do not use Markdown fences, prose outside JSON, or both action and final."""
 
 
 class ShamaranAgent:
@@ -45,7 +51,17 @@ class ShamaranAgent:
         plan_shown = False
         for step in range(1, self.max_steps + 1):
             response = self.provider.complete(messages, self.tools.descriptions())
-            envelope = parse_envelope(response.content)
+            try:
+                envelope = parse_envelope(response.content)
+            except ProviderError as first_error:
+                messages.append(ChatMessage(role="assistant", content=response.content))
+                messages.append(ChatMessage(role="system", content=FORMAT_REPAIR_PROMPT))
+                repaired = self.provider.complete(messages, self.tools.descriptions())
+                try:
+                    envelope = parse_envelope(repaired.content)
+                except ProviderError:
+                    raise first_error
+                response = repaired
             if envelope.plan and not plan_shown:
                 self.on_plan(envelope.plan)
                 plan_shown = True

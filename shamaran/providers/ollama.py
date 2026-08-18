@@ -10,6 +10,25 @@ from shamaran.exceptions import ConfigurationError, ProviderError
 from .base import BaseProvider, ChatMessage, ProviderResponse
 
 
+AGENT_RESPONSE_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "plan": {"type": "array", "items": {"type": "string"}},
+        "action": {
+            "type": "object",
+            "properties": {
+                "tool": {"type": "string"},
+                "arguments": {"type": "object"},
+            },
+            "required": ["tool", "arguments"],
+            "additionalProperties": False,
+        },
+        "final": {"type": "string"},
+    },
+    "additionalProperties": False,
+}
+
+
 class OllamaProvider(BaseProvider):
     name = "ollama"
 
@@ -59,9 +78,9 @@ class OllamaProvider(BaseProvider):
             json={
                 "model": self.model,
                 "stream": False,
-                "format": "json",
+                "format": AGENT_RESPONSE_SCHEMA,
                 "messages": [message.model_dump() for message in messages],
-                "options": {"temperature": 0.2},
+                "options": {"temperature": 0},
             },
         )
         try:

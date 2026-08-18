@@ -13,6 +13,8 @@ All notable changes to Shamaran are recorded here.
   guidance, a code of conduct, and citation metadata.
 - Expanded both READMEs with compatibility, configuration, troubleshooting, and
   extension guidance.
+- Improved Ollama structured-output reliability with an explicit agent schema,
+  deterministic generation, and one bounded format-repair attempt.
 
 ## 0.1.0 — Initial MVP
 

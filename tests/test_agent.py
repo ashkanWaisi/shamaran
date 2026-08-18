@@ -1,8 +1,10 @@
 from typing import Any
 
+import pytest
 from pydantic import BaseModel
 
 from shamaran.agent import ShamaranAgent
+from shamaran.exceptions import ProviderError
 from shamaran.providers.base import BaseProvider, ChatMessage, ProviderResponse
 from shamaran.tools.base import BaseTool, ToolResult
 from shamaran.tools.registry import ToolRegistry
@@ -76,6 +78,26 @@ def test_invalid_tool_becomes_observation() -> None:
     ])
     result = ShamaranAgent(provider, registry).run("use missing")
     assert result.answer == "The tool was unavailable."
+
+
+def test_invalid_response_is_repaired_once() -> None:
+    registry, tool = registry_with_tool()
+    provider = SequenceProvider([
+        '{"action":{"tool":"test.count","arguments":{}}}',
+        "Count is 1.",
+        '{"final":"Count is 1."}',
+    ])
+    result = ShamaranAgent(provider, registry).run("count")
+    assert result.answer == "Count is 1."
+    assert result.steps_used == 2
+    assert tool.calls == 1
+
+
+def test_invalid_response_fails_after_one_repair() -> None:
+    registry, _ = registry_with_tool()
+    provider = SequenceProvider(["not json", "still not json"])
+    with pytest.raises(ProviderError, match="invalid agent response"):
+        ShamaranAgent(provider, registry).run("count")
 
 
 def test_registry_schema() -> None:
