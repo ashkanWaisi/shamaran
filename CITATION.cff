@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use Shamaran in research or a publication, please cite this software."
+title: "Shamaran"
+type: software
+version: 0.1.0
+date-released: 2026-08-18
+authors:
+  - family-names: "Allahveisi"
+    given-names: "Ashkan"
+repository-code: "https://github.com/ashkanWaisi/shamaran"
+url: "https://github.com/ashkanWaisi/shamaran"
+license: MIT
+abstract: "A secure, local-first AI agent for computers and coding projects."
+keywords:
+  - artificial intelligence
+  - local-first
+  - software agent
+  - Ollama

@@ -23,6 +23,7 @@
 
 <p align="center">
   <a href="#why-shamaran">Why Shamaran</a> ·
+  <a href="#the-name">The Name</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#how-it-works">How It Works</a> ·
   <a href="#security-model">Security</a> ·
@@ -47,6 +48,18 @@ large orchestration frameworks.
 > Shamaran is a controlled assistant, not an unattended autonomous process. File
 > mutations, terminal execution, and Git operations are constrained by explicit
 > policies and confirmation boundaries.
+
+## The name
+
+**Shamaran** is inspired by **Şahmaran**, the legendary human-and-serpent figure
+with a deep place in Kurdish oral tradition, art, and cultural memory. Her stories
+often carry themes of knowledge, healing, protection, nature, and betrayal. The
+legend is especially meaningful across Kurdish-speaking communities and is also
+told, in different forms, by neighboring peoples of Mesopotamia and Anatolia.
+
+The project's name and official pixel identity honor that Kurdish inspiration
+without claiming ownership of a shared and many-layered regional tradition. Read
+the sourced [cultural note](docs/cultural-origin.md).
 
 ## Why Shamaran
 
@@ -75,6 +88,18 @@ access to the host machine. Shamaran takes a narrower, auditable approach:
 | Interface | Rich terminal UI, first-run guidance, diagnostics, and built-in commands |
 | Operations | Tests on Python 3.11–3.13, secret scan, package metadata, and GitHub Actions |
 
+### Compatibility
+
+| Platform | Python | Automated validation | Notes |
+| --- | --- | --- | --- |
+| Windows | 3.11–3.13 | GitHub Actions | PowerShell setup instructions included |
+| macOS | 3.11–3.13 | GitHub Actions | Intel and Apple Silicon depend on Python/Ollama availability |
+| Linux | 3.11–3.13 | GitHub Actions | Primary server and development environment |
+
+The core is pure Python. Provider availability and model performance are determined
+by Ollama and the model selected by the user. “Cross-platform” does not mean every
+third-party model, shell command, or operating-system configuration is guaranteed.
+
 ## Quick start
 
 ### Requirements
@@ -96,6 +121,15 @@ python -m venv .venv
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 Copy-Item .env.example .env
+```
+
+If PowerShell blocks virtual-environment activation, use the environment's Python
+directly instead of changing the machine-wide policy:
+
+```powershell
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe scripts\doctor.py
+.venv\Scripts\python.exe app.py
 ```
 
 ### macOS / Linux
@@ -151,6 +185,30 @@ shamaran
 ```
 
 The `shamaran` command becomes available after the package is installed.
+
+### Configuration reference
+
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `SHAMARAN_PROVIDER` | `ollama` | Registered model provider |
+| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama API endpoint |
+| `OLLAMA_MODEL` | none | Exact installed Ollama model name; required |
+| `SHAMARAN_WORKSPACE` | `./workspace` | Writable filesystem boundary |
+| `SHAMARAN_MAX_STEPS` | `8` | Hard limit for one agent run |
+| `SHAMARAN_CONFIRM_MUTATIONS` | `true` | Require confirmation for mutations |
+| `SHAMARAN_LOG_LEVEL` | `INFO` | Runtime log level |
+
+Keep `.env` local. It is ignored by Git; `.env.example` is the safe template.
+
+### Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| No model configured | Run `ollama list`, then copy the exact model name into `OLLAMA_MODEL` |
+| Ollama unavailable | Start Ollama and verify `OLLAMA_BASE_URL` |
+| `shamaran` command missing | Activate the virtual environment or run `python -m shamaran` |
+| A mutation is rejected | Review the confirmation prompt and `SHAMARAN_CONFIRM_MUTATIONS` |
+| Installation is unclear | Run `python scripts/doctor.py` and follow [SUPPORT.md](SUPPORT.md) |
 
 ## Example session
 
@@ -235,6 +293,21 @@ flowchart TD
 The application core never depends directly on Ollama. New providers can implement
 the same `BaseProvider` contract and register a factory.
 
+## Extending Shamaran
+
+Shamaran is designed to connect through explicit contracts, not an unrestricted
+“connect to everything” promise:
+
+- Model backends implement `BaseProvider` and register with the provider registry.
+- Capabilities implement the typed tool interface and register with `ToolRegistry`.
+- Persistent context is isolated behind the memory interface.
+- Every new mutation must define its validation, safety level, and confirmation
+  behavior before it can execute.
+
+The current public release includes Ollama plus filesystem, terminal, Git, and
+SQLite integrations. Other providers, MCP, browser control, cloud services, and
+desktop automation remain roadmap items until code and tests exist for them.
+
 ## Security model
 
 ```mermaid
@@ -300,6 +373,8 @@ python scripts/check_secrets.py
 
 The provider suite uses HTTP mocks; CI does not require a running Ollama server.
 GitHub Actions runs the full suite on Python 3.11, 3.12, and 3.13.
+The workflow covers Windows, macOS, and Linux and uses independent jobs so a failure
+on one environment remains visible.
 
 Before opening a pull request:
 
@@ -350,7 +425,10 @@ Roadmap items are plans, not claims about the current release.
 - [Security guide](docs/security.md)
 - [Provider guide](docs/providers.md)
 - [Tool guide](docs/tools.md)
+- [Name and cultural origin](docs/cultural-origin.md)
+- [Support](SUPPORT.md)
 - [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Changelog](CHANGELOG.md)
 
 ## Brand assets

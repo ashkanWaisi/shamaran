@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security report
+    url: https://github.com/ashkanWaisi/shamaran/security/policy
+    about: Report vulnerabilities privately; do not open a public issue.
+  - name: Support guide
+    url: https://github.com/ashkanWaisi/shamaran/blob/main/SUPPORT.md
+    about: Read installation checks and choose the right support channel.

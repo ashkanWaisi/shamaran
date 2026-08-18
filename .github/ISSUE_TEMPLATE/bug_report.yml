@@ -1,0 +1,69 @@
+name: Bug report
+description: Report a reproducible problem in Shamaran
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not include API keys, tokens, private prompts, or sensitive file contents.
+  - type: input
+    id: version
+    attributes:
+      label: Shamaran version
+      description: Run `python -m shamaran --version`.
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: 3.12.5
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: Include the smallest safe example that reproduces the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Paste non-secret output from `python scripts/doctor.py` and any relevant error message.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Final checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: I removed secrets and private data from this report.
+          required: true

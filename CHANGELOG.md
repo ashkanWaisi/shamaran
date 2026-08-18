@@ -6,6 +6,13 @@ All notable changes to Shamaran are recorded here.
 
 - Adopted the official Shamaran symbol, logotype, and combined PNG artwork.
 - Refined project metadata and documentation under Ashkan Allahveisi's authorship.
+- Added cross-platform CI for Windows, macOS, and Linux on Python 3.11–3.13.
+- Documented the project's Kurdish cultural inspiration with academic and cultural
+  references.
+- Added issue forms, a pull request template, code ownership, Dependabot, support
+  guidance, a code of conduct, and citation metadata.
+- Expanded both READMEs with compatibility, configuration, troubleshooting, and
+  extension guidance.
 
 ## 0.1.0 — Initial MVP
 
@@ -16,4 +23,4 @@ All notable changes to Shamaran are recorded here.
 - Read-only and confirmation-gated Git tools; no push implementation.
 - Local SQLite memory with credential-like content rejection.
 - Rich interactive CLI, built-in commands, diagnostics, and safe logging.
-- English and Persian documentation, tests, CI, and original SVG assets.
+- English and Persian documentation, tests, CI, and initial brand assets.
