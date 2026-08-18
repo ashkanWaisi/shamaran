@@ -6,13 +6,12 @@ from pathlib import Path
 
 import typer
 from pydantic import ValidationError
-from rich.markdown import Markdown
 from rich.prompt import Confirm, Prompt
 from rich.table import Table
 
 from shamaran.agent import ShamaranAgent
 from shamaran.agent.context import relevant_memory
-from shamaran.config import Settings
+from shamaran.config import DEFAULT_CONFIG_DIR, DEFAULT_CONFIG_FILE, Settings
 from shamaran.doctor import run_checks
 from shamaran.exceptions import ShamaranError
 from shamaran.logging_config import configure_logging
@@ -22,7 +21,7 @@ from shamaran.tools.filesystem import FilesystemSandbox, filesystem_tools
 from shamaran.tools.git_tools import git_tools
 from shamaran.tools.registry import ToolRegistry
 from shamaran.tools.terminal import TerminalTool
-from shamaran.ui import console, show_banner, status_table
+from shamaran.ui import console, print_assistant_answer, show_banner, status_table
 from shamaran.version import __version__
 
 
@@ -171,7 +170,7 @@ def _interactive(settings: Settings) -> None:
             try:
                 result = agent.run(request, relevant_memory(memory, request))
                 console.print("\n[shamaran.title]Shamaran[/]\n")
-                console.print(Markdown(result.answer))
+                print_assistant_answer(result.answer)
             except ShamaranError as exc:
                 logger.warning("request failed error=%s", exc)
                 console.print(f"[shamaran.error]{exc}[/]")
@@ -191,14 +190,13 @@ def main(
         raise typer.Exit()
     if ctx.invoked_subcommand is not None:
         return
-    if not Path(".env").exists():
+    if not Path(".env").exists() and not DEFAULT_CONFIG_FILE.exists():
         show_banner()
         console.print(
             "\n[shamaran.title]Welcome to Shamaran.[/]\n\n"
             "No .env configuration was found.\n\n"
-            "1. Copy .env.example to .env\n"
-            "2. Configure your Ollama model\n"
-            "3. Run Shamaran again\n\n"
+            "1. Run shamaran setup --model YOUR_MODEL_NAME\n"
+            "2. Run Shamaran again\n\n"
             "Run [shamaran.accent]python scripts/doctor.py[/] for diagnostics."
         )
         return
@@ -206,6 +204,40 @@ def main(
         _interactive(Settings())
     except ValidationError as exc:
         console.print(f"[shamaran.error]Invalid configuration:[/] {exc}")
+
+
+@app.command()
+def setup(
+    model: str = typer.Option(..., "--model", "-m", help="Installed Ollama model name."),
+    force: bool = typer.Option(False, "--force", help="Replace existing global configuration."),
+) -> None:
+    """Create a global user configuration so `shamaran` works from any directory."""
+    if DEFAULT_CONFIG_FILE.exists() and not force:
+        console.print(
+            f"[shamaran.warning]Configuration already exists:[/] {DEFAULT_CONFIG_FILE}\n"
+            "Use --force only if you want to replace it."
+        )
+        return
+    model = model.strip()
+    if not model:
+        raise typer.BadParameter("model cannot be empty")
+    workspace = (DEFAULT_CONFIG_DIR / "workspace").as_posix()
+    memory_db = (DEFAULT_CONFIG_DIR / "data" / "shamaran_memory.db").as_posix()
+    DEFAULT_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    DEFAULT_CONFIG_FILE.write_text(
+        "SHAMARAN_PROVIDER=ollama\n"
+        f'SHAMARAN_WORKSPACE="{workspace}"\n'
+        "SHAMARAN_MAX_STEPS=8\n"
+        "SHAMARAN_LOG_LEVEL=INFO\n"
+        "SHAMARAN_CONFIRM_MUTATIONS=true\n"
+        f'SHAMARAN_MEMORY_DB="{memory_db}"\n\n'
+        "OLLAMA_BASE_URL=http://localhost:11434\n"
+        f"OLLAMA_MODEL={model}\n"
+        "OLLAMA_TIMEOUT=120\n",
+        encoding="utf-8",
+    )
+    console.print(f"[shamaran.success]Configuration saved:[/] {DEFAULT_CONFIG_FILE}")
+    console.print("Run [shamaran.accent]shamaran doctor[/], then [shamaran.accent]shamaran[/].")
 
 
 @app.command()

@@ -96,6 +96,21 @@
 
 ### ویندوز PowerShell
 
+کوتاه‌ترین روش نصب سراسری با [uv](https://docs.astral.sh/uv/guides/tools/) است:
+
+```powershell
+uv tool install "git+https://github.com/ashkanWaisi/shamaran.git"
+shamaran setup --model qwen3.5:9b
+shamaran
+```
+
+فرمان اول شاماران را مستقیماً از GitHub و در محیطی جدا نصب می‌کند. فرمان `setup`
+تنظیمات کاربر را در `~/.shamaran/.env` می‌سازد تا پس از آن، فرمان سادهٔ `shamaran`
+از هر پوشه‌ای اجرا شود. برای دریافت نسخه‌های بعدی از `uv tool upgrade shamaran`
+استفاده کنید.
+
+برای دریافت سورس و توسعهٔ پروژه:
+
 ```powershell
 git clone https://github.com/ashkanWaisi/shamaran.git
 cd shamaran
@@ -118,6 +133,9 @@ Python داخل محیط استفاده کنید:
 ```
 
 ### macOS و Linux
+
+همین فرمان‌های `uv tool install` و `shamaran setup` روی macOS و Linux نیز کار
+می‌کنند. برای دریافت سورس و توسعه:
 
 ```bash
 git clone https://github.com/ashkanWaisi/shamaran.git

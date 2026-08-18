@@ -17,6 +17,10 @@ All notable changes to Shamaran are recorded here.
   deterministic generation, and one bounded format-repair attempt.
 - Reframed the project's cultural note around Şahmaran's Kurdish identity and
   strengthened it with Kurdish-studies and Harvard Divinity School references.
+- Added Persian/Arabic shaping and bidirectional terminal rendering while preserving
+  embedded Latin text such as branch names and commands.
+- Added `shamaran setup` and global user configuration loading for a short,
+  directory-independent installation and launch flow.
 
 ## 0.1.0 — Initial MVP
 
