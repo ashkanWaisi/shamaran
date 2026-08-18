@@ -21,6 +21,8 @@ All notable changes to Shamaran are recorded here.
   embedded Latin text such as branch names and commands.
 - Added `shamaran setup` and global user configuration loading for a short,
   directory-independent installation and launch flow.
+- Added a complete right-to-left Sorani Kurdish README and a three-language
+  selector across the English, Persian, and Kurdish documentation.
 
 ## 0.1.0 — Initial MVP
 

@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">English</a> · <a href="README.fa.md">فارسی</a>
+  <a href="README.md">English</a> · <a href="README.fa.md">فارسی</a> · <a href="README.ku.md">کوردی (سۆرانی)</a>
 </p>
 
 <p align="center">
