@@ -13,9 +13,18 @@ def provider(handler) -> OllamaProvider:
 
 
 def test_ollama_response_parsing() -> None:
-    item = provider(lambda request: httpx.Response(
-        200, json={"model": "test-model", "message": {"content": '{"final":"done"}'}}, request=request
-    ))
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = __import__("json").loads(request.content)
+        assert payload["format"]["type"] == "object"
+        assert "action" in payload["format"]["properties"]
+        assert payload["options"]["temperature"] == 0
+        return httpx.Response(
+            200,
+            json={"model": "test-model", "message": {"content": '{"final":"done"}'}},
+            request=request,
+        )
+
+    item = provider(handler)
     response = item.complete([ChatMessage(role="user", content="hello")], [])
     assert response.content == '{"final":"done"}'
 
