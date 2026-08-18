@@ -84,6 +84,7 @@ access to the host machine. Shamaran takes a narrower, auditable approach:
 | Provider | Ollama chat API, model discovery, health checks, readable failure messages |
 | Filesystem | List, read, write, exact replace, and directory creation |
 | Terminal | Allowlisted commands, argument arrays, timeouts, captured output, policy enforcement |
+| Desktop | Confirmed opening of This PC, common folders, Calculator, Notepad, and Settings |
 | Git | Status, diff, log, branch, add, and local commit |
 | Memory | Remember, search, recent list, forget, and clear using SQLite |
 | Interface | Rich terminal UI, first-run guidance, diagnostics, and built-in commands |
@@ -338,9 +339,9 @@ Shamaran is designed to connect through explicit contracts, not an unrestricted
 - Every new mutation must define its validation, safety level, and confirmation
   behavior before it can execute.
 
-The current public release includes Ollama plus filesystem, terminal, Git, and
-SQLite integrations. Other providers, MCP, browser control, cloud services, and
-desktop automation remain roadmap items until code and tests exist for them.
+The current public release includes Ollama plus filesystem, terminal, Git, SQLite,
+and a narrow allowlisted desktop launcher. Other providers, MCP, browser control,
+cloud services, and full mouse/keyboard automation remain roadmap items.
 
 ## Security model
 
@@ -366,6 +367,8 @@ Security controls in the current release include:
 - Terminal output and execution time are bounded.
 - Filesystem and Git mutations require confirmation and fail closed when confirmation
   is unavailable.
+- Desktop actions are limited to named built-in targets, remain visible, and require
+  confirmation; arbitrary executables and arguments are rejected by the schema.
 - Git push, force-push, reset-hard, clean, and file deletion are not exposed as agent
   tools.
 - SQLite memory rejects obvious credential-like content.
@@ -431,7 +434,7 @@ release:
 - unattended background operation
 - unrestricted shell access
 - automatic Git push
-- browser or desktop control
+- browser control or unrestricted mouse/keyboard automation
 - semantic or embedding-based memory
 - graphical desktop interface
 - voice interaction
