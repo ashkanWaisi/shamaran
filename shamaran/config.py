@@ -1,5 +1,6 @@
 """Central, environment-driven configuration."""
 
+import os
 from pathlib import Path
 from typing import Literal
 
@@ -7,9 +8,17 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+DEFAULT_CONFIG_DIR = Path(
+    os.environ.get("SHAMARAN_HOME", Path.home() / ".shamaran")
+).expanduser()
+DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / ".env"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+        env_file=(DEFAULT_CONFIG_FILE, ".env"),
+        env_file_encoding="utf-8",
+        extra="ignore",
     )
 
     provider: str = Field("ollama", validation_alias="SHAMARAN_PROVIDER")

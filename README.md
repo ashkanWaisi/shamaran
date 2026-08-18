@@ -112,6 +112,22 @@ third-party model, shell command, or operating-system configuration is guarantee
 
 ### Windows PowerShell
 
+The shortest system-wide installation uses
+[uv](https://docs.astral.sh/uv/guides/tools/):
+
+```powershell
+uv tool install "git+https://github.com/ashkanWaisi/shamaran.git"
+shamaran setup --model qwen3.5:9b
+shamaran
+```
+
+The first command installs Shamaran directly from GitHub in an isolated environment.
+`setup` creates a user configuration at `~/.shamaran/.env`, so the final `shamaran`
+command works from any directory. Use `uv tool upgrade shamaran` to install future
+updates.
+
+For a development checkout instead:
+
 ```powershell
 git clone https://github.com/ashkanWaisi/shamaran.git
 cd shamaran
@@ -134,6 +150,9 @@ directly instead of changing the machine-wide policy:
 ```
 
 ### macOS / Linux
+
+The same `uv tool install` and `shamaran setup` commands work on macOS and Linux.
+For a development checkout:
 
 ```bash
 git clone https://github.com/ashkanWaisi/shamaran.git
