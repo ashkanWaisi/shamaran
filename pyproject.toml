@@ -37,7 +37,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<9"]
+dev = ["pytest>=8,<10"]
 
 [project.scripts]
 shamaran = "shamaran.cli:app"
