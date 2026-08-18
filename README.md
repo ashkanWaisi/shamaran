@@ -51,15 +51,16 @@ large orchestration frameworks.
 
 ## The name
 
-**Shamaran** is inspired by **Şahmaran**, the legendary human-and-serpent figure
-with a deep place in Kurdish oral tradition, art, and cultural memory. Her stories
-often carry themes of knowledge, healing, protection, nature, and betrayal. The
-legend is especially meaningful across Kurdish-speaking communities and is also
-told, in different forms, by neighboring peoples of Mesopotamia and Anatolia.
+**Shamaran** is inspired by **Şahmaran**, the legendary human-and-serpent figure of
+Kurdish mythology, spirituality, oral tradition, art, and cultural memory. Her
+stories carry themes of knowledge, healing, protection, nature, resistance, and
+betrayal. Kurdish scholarship describes her as the Mother Earth Goddess of
+Kurdistan and a surviving expression of pre-Islamic Kurdish spirituality.
 
-The project's name and official pixel identity honor that Kurdish inspiration
-without claiming ownership of a shared and many-layered regional tradition. Read
-the sourced [cultural note](docs/cultural-origin.md).
+The project's name and official pixel identity explicitly honor Kurdish cultural
+heritage, the people of Kurdistan, and the generations of Kurdish-speaking families
+who have kept the image and story alive. Read the sourced
+[cultural note](docs/cultural-origin.md).
 
 ## Why Shamaran
 

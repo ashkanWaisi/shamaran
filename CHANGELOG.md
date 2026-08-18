@@ -15,6 +15,8 @@ All notable changes to Shamaran are recorded here.
   extension guidance.
 - Improved Ollama structured-output reliability with an explicit agent schema,
   deterministic generation, and one bounded format-repair attempt.
+- Reframed the project's cultural note around Şahmaran's Kurdish identity and
+  strengthened it with Kurdish-studies and Harvard Divinity School references.
 
 ## 0.1.0 — Initial MVP
 
