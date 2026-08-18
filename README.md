@@ -118,13 +118,27 @@ The shortest system-wide installation uses
 ```powershell
 uv tool install "git+https://github.com/ashkanWaisi/shamaran.git"
 shamaran setup --model qwen3.5:9b
-shamaran
+shamaran web
 ```
 
 The first command installs Shamaran directly from GitHub in an isolated environment.
 `setup` creates a user configuration at `~/.shamaran/.env`, so the final `shamaran`
-command works from any directory. Use `uv tool upgrade shamaran` to install future
-updates.
+command works from any directory. `shamaran web` opens the graphical interface at
+`http://127.0.0.1:8000`; use `shamaran` for the terminal interface. Use
+`uv tool upgrade shamaran` to install future updates.
+
+### Web UI
+
+```powershell
+shamaran web
+```
+
+The lightweight Copper Archive interface includes live Ollama status, model and
+step controls, local memory search, tool activity, a per-message mutation switch,
+and English, Persian, and Sorani Kurdish layouts. It binds to `127.0.0.1` by
+default, so it is available only on your computer. To use it on a trusted local
+network, run `shamaran web --host 0.0.0.0` and open port `8000` at your computer's
+LAN address.
 
 For a development checkout instead:
 
