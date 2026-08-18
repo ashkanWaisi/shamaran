@@ -133,7 +133,10 @@ command works from any directory. `shamaran web` opens the graphical interface a
 shamaran web
 ```
 
-The lightweight Copper Archive interface includes live Ollama status, model and
+The lightweight Copper Archive interface includes a Model Hub that discovers
+installed Ollama models and connects to LM Studio, LocalAI, llama.cpp, vLLM, or
+another server implementing the OpenAI-compatible API. Choose a source, edit its
+endpoint, select **Scan models**, and then choose the active model. It also includes
 step controls, local memory search, tool activity, a per-message mutation switch,
 and English, Persian, and Sorani Kurdish layouts. It binds to `127.0.0.1` by
 default, so it is available only on your computer. To use it on a trusted local
@@ -198,6 +201,19 @@ OLLAMA_TIMEOUT=60
 
 Shamaran intentionally does not hardcode a model. Use the exact name reported by
 your Ollama installation.
+
+For another compatible server, use the **Models** tab in the Web UI. Common local
+endpoints are already listed. If the server requires authentication, store the key
+only in your ignored local `.env` file:
+
+```env
+SHAMARAN_COMPATIBLE_BASE_URL=http://localhost:1234/v1
+SHAMARAN_COMPATIBLE_MODEL=YOUR_MODEL_NAME
+SHAMARAN_COMPATIBLE_API_KEY=
+```
+
+The Web UI stores only the selected source, endpoint, and model in browser storage;
+it never stores the API key there.
 
 Run diagnostics:
 

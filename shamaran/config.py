@@ -33,6 +33,14 @@ class Settings(BaseSettings):
     )
     ollama_model: str = Field("", validation_alias="OLLAMA_MODEL")
     ollama_timeout: float = Field(60.0, gt=0, le=600, validation_alias="OLLAMA_TIMEOUT")
+    compatible_base_url: str = Field(
+        "http://localhost:1234/v1", validation_alias="SHAMARAN_COMPATIBLE_BASE_URL"
+    )
+    compatible_model: str = Field("", validation_alias="SHAMARAN_COMPATIBLE_MODEL")
+    compatible_api_key: str = Field("", validation_alias="SHAMARAN_COMPATIBLE_API_KEY")
+    compatible_timeout: float = Field(
+        60.0, gt=0, le=600, validation_alias="SHAMARAN_COMPATIBLE_TIMEOUT"
+    )
     memory_db: Path = Field(
         Path("data/shamaran_memory.db"), validation_alias="SHAMARAN_MEMORY_DB"
     )
@@ -45,11 +53,11 @@ class Settings(BaseSettings):
             raise ValueError("provider cannot be empty")
         return value
 
-    @field_validator("ollama_base_url")
+    @field_validator("ollama_base_url", "compatible_base_url")
     @classmethod
     def clean_url(cls, value: str) -> str:
         if not value.startswith(("http://", "https://")):
-            raise ValueError("OLLAMA_BASE_URL must be an HTTP(S) URL")
+            raise ValueError("Model endpoint must be an HTTP(S) URL")
         return value.rstrip("/")
 
     def ensure_directories(self) -> None:

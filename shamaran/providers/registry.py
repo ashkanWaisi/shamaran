@@ -7,6 +7,7 @@ from shamaran.exceptions import ConfigurationError
 
 from .base import BaseProvider
 from .ollama import OllamaProvider
+from .openai_compatible import OpenAICompatibleProvider
 
 
 ProviderFactory = Callable[[Settings], BaseProvider]
@@ -35,6 +36,15 @@ def default_provider_registry() -> ProviderRegistry:
         "ollama",
         lambda settings: OllamaProvider(
             settings.ollama_base_url, settings.ollama_model, settings.ollama_timeout
+        ),
+    )
+    registry.register(
+        "openai-compatible",
+        lambda settings: OpenAICompatibleProvider(
+            settings.compatible_base_url,
+            settings.compatible_model,
+            settings.compatible_api_key,
+            settings.compatible_timeout,
         ),
     )
     return registry
