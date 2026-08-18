@@ -2,6 +2,9 @@
 
 Thank you for helping make Shamaran safer and more useful.
 
+Shamaran is created and maintained by **Ashkan Allahveisi**. Contributions are
+welcome through focused issues and pull requests.
+
 ## Development setup
 
 Use Python 3.11 or newer. Create a virtual environment, activate it, then run:

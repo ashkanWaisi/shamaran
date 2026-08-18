@@ -15,7 +15,7 @@ PATTERNS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
     "bearer token": re.compile(r"(?i)\bbearer\s+[A-Za-z0-9._~+/-]{20,}"),
     "GitHub token": re.compile(r"\b(?:ghp|github_pat)_[A-Za-z0-9_]{20,}"),
-    "OpenAI-style key": re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}"),
+    "sk-prefixed API key": re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}"),
 }
 
 
