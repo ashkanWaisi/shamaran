@@ -9,7 +9,8 @@ description = "A secure, local-first AI agent for your computer and projects."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "Shamaran contributors" }]
+authors = [{ name = "Ashkan Allahveisi" }]
+maintainers = [{ name = "Ashkan Allahveisi" }]
 keywords = ["ai-agent", "ollama", "local-first", "developer-tools"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -30,6 +31,12 @@ dev = ["pytest>=8,<9"]
 
 [project.scripts]
 shamaran = "shamaran.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/ashkanWaisi/shamaran"
+Repository = "https://github.com/ashkanWaisi/shamaran"
+Issues = "https://github.com/ashkanWaisi/shamaran/issues"
+Changelog = "https://github.com/ashkanWaisi/shamaran/blob/main/CHANGELOG.md"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

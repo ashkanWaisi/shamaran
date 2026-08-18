@@ -2,6 +2,11 @@
 
 All notable changes to Shamaran are recorded here.
 
+## Unreleased
+
+- Adopted the official Shamaran symbol, logotype, and combined PNG artwork.
+- Refined project metadata and documentation under Ashkan Allahveisi's authorship.
+
 ## 0.1.0 — Initial MVP
 
 - Bounded, JSON-protocol agent loop with concise visible plans.
