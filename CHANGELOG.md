@@ -4,6 +4,10 @@ All notable changes to Shamaran are recorded here.
 
 ## Unreleased
 
+- Added a Web UI Model Hub with presets, endpoint testing, live model discovery,
+  and active-model selection for Ollama, LM Studio, LocalAI, llama.cpp, vLLM,
+  and custom OpenAI-compatible servers.
+- Added an OpenAI-compatible provider without exposing API keys to browser storage.
 - Adopted the official Shamaran symbol, logotype, and combined PNG artwork.
 - Refined project metadata and documentation under Ashkan Allahveisi's authorship.
 - Added cross-platform CI for Windows, macOS, and Linux on Python 3.11–3.13.

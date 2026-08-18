@@ -4,6 +4,7 @@ import pytest
 from shamaran.exceptions import ProviderError
 from shamaran.providers.base import ChatMessage
 from shamaran.providers.ollama import OllamaProvider
+from shamaran.providers.openai_compatible import OpenAICompatibleProvider
 
 
 def provider(handler) -> OllamaProvider:
@@ -58,3 +59,36 @@ def test_health_reports_unavailable_model() -> None:
     ok, detail = item.health()
     assert not ok
     assert "unavailable" in detail
+
+
+def compatible_provider(handler) -> OpenAICompatibleProvider:
+    transport = httpx.MockTransport(handler)
+    return OpenAICompatibleProvider(
+        "http://models.test/v1", "local-model", client=httpx.Client(transport=transport)
+    )
+
+
+def test_openai_compatible_discovers_models() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/v1/models"
+        return httpx.Response(200, json={"data": [{"id": "model-a"}, {"id": "model-b"}]}, request=request)
+
+    assert compatible_provider(handler).models() == ["model-a", "model-b"]
+
+
+def test_openai_compatible_chat_and_tool_observation() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = __import__("json").loads(request.content)
+        assert request.url.path == "/v1/chat/completions"
+        assert payload["model"] == "local-model"
+        assert payload["messages"][1] == {"role": "user", "content": "Tool observation:\nresult"}
+        return httpx.Response(
+            200,
+            json={"model": "local-model", "choices": [{"message": {"content": '{"final":"done"}'}}]},
+            request=request,
+        )
+
+    response = compatible_provider(handler).complete(
+        [ChatMessage(role="user", content="hello"), ChatMessage(role="tool", content="result")], []
+    )
+    assert response.content == '{"final":"done"}'

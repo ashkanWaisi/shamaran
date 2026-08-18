@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
+from urllib.parse import urlparse
 
 import httpx
 from fastapi import FastAPI, HTTPException, Query
@@ -18,14 +19,30 @@ from shamaran.config import Settings
 from shamaran.exceptions import ShamaranError
 from shamaran.memory import SQLiteMemory
 from shamaran.providers.registry import default_provider_registry
+from shamaran.providers.ollama import OllamaProvider
+from shamaran.providers.openai_compatible import OpenAICompatibleProvider
 from shamaran.version import __version__
 
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=20_000)
+    provider: Literal["ollama", "openai-compatible"] = "ollama"
+    endpoint: str | None = Field(default=None, max_length=500)
     model: str | None = None
     max_steps: int | None = Field(default=None, ge=1, le=32)
     allow_mutations: bool = False
+
+
+class ModelDiscoveryRequest(BaseModel):
+    provider: Literal["ollama", "openai-compatible"]
+    endpoint: str = Field(min_length=8, max_length=500)
+
+
+def _endpoint(value: str) -> str:
+    parsed = urlparse(value)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise HTTPException(status_code=400, detail="Endpoint must be a valid HTTP(S) URL")
+    return value.rstrip("/")
 
 
 def _record(record: Any) -> dict[str, Any]:
@@ -56,7 +73,7 @@ def create_app() -> FastAPI:
         return {
             "version": __version__,
             "provider": settings.provider,
-            "model": settings.ollama_model,
+            "model": settings.ollama_model if settings.provider == "ollama" else settings.compatible_model,
             "models": models,
             "endpoint": settings.ollama_base_url,
             "workspace": str(settings.workspace.expanduser().resolve()),
@@ -65,6 +82,38 @@ def create_app() -> FastAPI:
             "ollama_ok": ollama_ok,
             "ollama_detail": ollama_detail,
             "tools": tools.descriptions(),
+            "providers": [
+                {"id": "ollama", "name": "Ollama", "protocol": "ollama", "default_endpoint": settings.ollama_base_url},
+                {"id": "lm-studio", "name": "LM Studio", "protocol": "openai-compatible", "default_endpoint": "http://localhost:1234/v1"},
+                {"id": "localai", "name": "LocalAI", "protocol": "openai-compatible", "default_endpoint": "http://localhost:8080/v1"},
+                {"id": "llama-cpp", "name": "llama.cpp", "protocol": "openai-compatible", "default_endpoint": "http://localhost:8080/v1"},
+                {"id": "vllm", "name": "vLLM", "protocol": "openai-compatible", "default_endpoint": "http://localhost:8000/v1"},
+                {"id": "custom", "name": "Custom server", "protocol": "openai-compatible", "default_endpoint": settings.compatible_base_url},
+            ],
+        }
+
+    @app.post("/api/models/discover")
+    def discover_models(payload: ModelDiscoveryRequest) -> dict[str, Any]:
+        endpoint = _endpoint(payload.endpoint)
+        try:
+            if payload.provider == "ollama":
+                provider = OllamaProvider(endpoint, settings.ollama_model, timeout=5)
+            else:
+                provider = OpenAICompatibleProvider(
+                    endpoint,
+                    settings.compatible_model,
+                    settings.compatible_api_key,
+                    timeout=5,
+                )
+            models = provider.models()
+        except ShamaranError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        return {
+            "connected": True,
+            "provider": payload.provider,
+            "endpoint": endpoint,
+            "models": models,
+            "auth_configured": bool(settings.compatible_api_key) if payload.provider != "ollama" else True,
         }
 
     @app.get("/api/memory")
@@ -74,12 +123,17 @@ def create_app() -> FastAPI:
 
     @app.post("/api/chat")
     def chat(payload: ChatRequest) -> dict[str, Any]:
-        runtime = settings.model_copy(
-            update={
-                "ollama_model": payload.model or settings.ollama_model,
-                "max_steps": payload.max_steps or settings.max_steps,
-            }
-        )
+        updates: dict[str, Any] = {
+            "provider": payload.provider,
+            "max_steps": payload.max_steps or settings.max_steps,
+        }
+        if payload.provider == "ollama":
+            updates["ollama_base_url"] = _endpoint(payload.endpoint or settings.ollama_base_url)
+            updates["ollama_model"] = payload.model or settings.ollama_model
+        else:
+            updates["compatible_base_url"] = _endpoint(payload.endpoint or settings.compatible_base_url)
+            updates["compatible_model"] = payload.model or settings.compatible_model
+        runtime = settings.model_copy(update=updates)
         plan: list[str] = []
         events: list[dict[str, Any]] = []
         tools = build_registry(
@@ -105,7 +159,8 @@ def create_app() -> FastAPI:
             "tools": events,
             "steps_used": result.steps_used,
             "exhausted": result.exhausted,
-            "model": runtime.ollama_model,
+            "model": runtime.ollama_model if runtime.provider == "ollama" else runtime.compatible_model,
+            "provider": runtime.provider,
         }
 
     if static_dir.exists():
